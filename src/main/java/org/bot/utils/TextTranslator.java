@@ -12,7 +12,7 @@ import java.util.Locale;
 
 import static org.bot.utils.Consts.*;
 
-public class TranslatorText {
+public class TextTranslator {
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -29,7 +29,6 @@ public class TranslatorText {
                     .url(AZ_URL + "&from=en&to=" + languageCode.toLowerCase())
                     .post(body)
                     .addHeader("Ocp-Apim-Subscription-Key", AZ_KEY)
-                    // location required if you're using a multi-service or regional (not global) resource.
                     .addHeader("Ocp-Apim-Subscription-Region", AZ_LOCATION)
                     .addHeader("Content-type", "application/json")
                     .build();
