@@ -16,13 +16,13 @@ public class Consts {
 
     public static final String SET_LANGUAGE = "set language";
 
-    public static final String TEL_USER = "NunChuckBot";
+    public static final String TEL_USER = System.getenv("TEL_USER");
 
-    public static final String TEL_KEY = "6650535648:AAEZH09Y0vRXlaVu0vjOWeZ-gl1fPfd0mh0";
+    public static final String TEL_KEY = System.getenv("TEL_KEY");
 
-    public static final String AZ_KEY = "d73318ffab7f40c58e0f93094b2980fe";
+    public static final String AZ_KEY = System.getenv("AZ_KEY");
 
-    public static final String AZ_LOCATION = "germanywestcentral";
+    public static final String AZ_LOCATION = System.getenv("AZ_LOCATION");
 
     public static final String AZ_URL = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0";
 
@@ -39,6 +39,7 @@ public class Consts {
 
     public static String SET_LANGUAGE_FIRST = "Chuck Norris speaks all languages, which is why you should pick one first." +
             System.lineSeparator() +  "For example: Set language english";
+
     public static String INVALID_INPUT_NUMBER = "Chuck Norris never gets invalid input," +
             System.lineSeparator() + "your keyboard should apologize." +
             System.lineSeparator() + "Or try typing a valid number between 1 - 101";
