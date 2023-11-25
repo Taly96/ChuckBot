@@ -34,7 +34,7 @@ public class ChuckNorrisJokesScraper {
                     i++;
 
                     if(i > jokeNumber){
-                        joke = i + jokeInList.getTextContent().trim();
+                        joke = jokeNumber + ". " + jokeInList.getTextContent().trim();
                         break;
                     }
                 }
