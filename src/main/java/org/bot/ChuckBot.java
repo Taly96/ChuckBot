@@ -64,19 +64,19 @@ public class ChuckBot extends TelegramLongPollingBot {
                     msgToUser = getChuckNorrisJoke(jokeNumber, langCode);
                 }
                 else{
-                    msgToUser = "Please use a number between 1 - 101";
+                    msgToUser = INVALID_INPUT_NUMBER;
                 }
             }
             else{
-                msgToUser = "Please set language first";
+                msgToUser = SET_LANGUAGE_FIRST;
             }
 
         }else{
             if(null == langCode){
-                msgToUser = "Please set language first";
+                msgToUser = SET_LANGUAGE_FIRST;
             }
             else{
-                msgToUser = "please enter a valid number between 1 - 101";
+                msgToUser = INVALID_INPUT_NUMBER;
             }
         }
 
@@ -107,7 +107,7 @@ public class ChuckBot extends TelegramLongPollingBot {
 
     private String setLanguage(String msgFromUser) throws IOException {
         String selectedLang = msgFromUser.toLowerCase().substring(SET_LANGUAGE.length()).trim();
-        String translatedText = INVALID_INPUT;
+        String translatedText = INVALID_INPUT_LANGUAGE;
         langCode = findLanguageCode(selectedLang);
 
         if(null != langCode) {
