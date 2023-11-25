@@ -32,7 +32,7 @@ public class ChuckBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
 
-        return TEL_KEY; // todo - delete before push
+        return TEL_KEY;
     }
 
     @Override
