@@ -11,7 +11,6 @@ import static org.bot.utils.Consts.*;
 public class ChuckNorrisJokesScraper {
 
     public String getJokeByNumber(int jokeNumber){
-
         String joke = NO_JOKE;
 
         try {
@@ -32,17 +31,14 @@ public class ChuckNorrisJokesScraper {
                 int i = 1;
 
                 for (HtmlElement jokeInList : jokes) {
-                    String jokeText = jokeInList.getTextContent().trim();
-                    System.out.println("Joke " + jokeNumber + ": " + jokeText);//TODO:DELELTE
                     i++;
 
                     if(i > jokeNumber){
-                        joke = jokeInList.getTextContent();
+                        joke = i + jokeInList.getTextContent().trim();
                         break;
                     }
                 }
             }
-
             webClient.close();
 
         } catch (Exception e) {

@@ -35,7 +35,6 @@ public class TextTranslator {
             translatedText = extractTranslatedText(response.body().string());
         }
 
-
         return translatedText;
     }
 

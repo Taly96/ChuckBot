@@ -57,10 +57,10 @@ public class ChuckBot extends TelegramLongPollingBot {
                 msgToUser = setLanguage(msgFromUser);
         }
         else if (isNumeric(msgFromUser)){
+
             if(null != langCode){
                 int jokeNumber = Integer.parseInt(msgFromUser);
                 if(isValidJokeNumber(jokeNumber)){
-
                     msgToUser = getChuckNorrisJoke(jokeNumber, langCode);
                 }
                 else{
@@ -72,6 +72,7 @@ public class ChuckBot extends TelegramLongPollingBot {
             }
 
         }else{
+
             if(null == langCode){
                 msgToUser = SET_LANGUAGE_FIRST;
             }
@@ -79,7 +80,6 @@ public class ChuckBot extends TelegramLongPollingBot {
                 msgToUser = INVALID_INPUT_NUMBER;
             }
         }
-
         sendText(userID, msgToUser);
     }
 

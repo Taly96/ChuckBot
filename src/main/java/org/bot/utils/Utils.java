@@ -10,6 +10,7 @@ public class Utils {
         for (Locale locale : availableLocales) {
 
             if (locale.getDisplayLanguage().equalsIgnoreCase(targetLanguageName)) {
+
                 return locale.getLanguage();
             }
         }
