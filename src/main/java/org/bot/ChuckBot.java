@@ -1,6 +1,7 @@
 package org.bot;
 
-import org.bot.utils.TextTranslator;
+import org.bot.scraper.ChuckNorrisJokesScraper;
+import org.bot.translator.TextTranslator;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,6 +16,9 @@ import static org.bot.utils.Consts.*;
 public class ChuckBot extends TelegramLongPollingBot {
 
     private final TextTranslator translator = new TextTranslator();
+
+
+    private final ChuckNorrisJokesScraper scraper = new ChuckNorrisJokesScraper();
 
     private long userID = -1;
 
@@ -52,27 +56,12 @@ public class ChuckBot extends TelegramLongPollingBot {
     private void handleUpdate(String msgFromUser) throws IOException, TelegramApiException {
         String msgToUser = "";
 
-        if (!isLanguageSelected){
-            if(msgFromUser.toLowerCase().startsWith("set language")){
-                msgToUser = setLanguage(msgFromUser);
-            }
-            else{
-                msgToUser = INVALID_INPUT;
-            }
-        }else{
-            if(isValidJokeNumber(msgFromUser)){
-                int jokeNumber = Integer.parseInt(msgFromUser);
-                msgToUser = getChuckNorrisJoke(jokeNumber, langCode);
-            }
-            msgToUser = INVALID_INPUT_NUMBER;
-        }
 
-        sendText(userID, msgToUser);
     }
 
-    private String getChuckNorrisJoke(int jokeNumber, String langCode) {
+    private String getChuckNorrisJoke(int jokeNumber, String langCode) throws IOException {
 
-        return null; //todo
+        return translator.Post(scraper.getJokeByNumber(jokeNumber), langCode);
     }
 
     private boolean isValidJokeNumber(String msgFromUser) {
@@ -89,7 +78,7 @@ public class ChuckBot extends TelegramLongPollingBot {
     }
 
     private String setLanguage(String msgFromUser) throws IOException {
-        String selectedLang = msgFromUser.toLowerCase().substring("set language".length()).trim();
+        String selectedLang = msgFromUser.toLowerCase().substring(SET_LANGUAGE.length()).trim();
         String translatedText = INVALID_INPUT;
         langCode = findLanguageCode(selectedLang);
 

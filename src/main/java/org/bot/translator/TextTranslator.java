@@ -1,4 +1,4 @@
-package org.bot.utils;
+package org.bot.translator;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.JsonNode;
