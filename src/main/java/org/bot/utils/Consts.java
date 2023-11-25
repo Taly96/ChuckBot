@@ -29,18 +29,18 @@ public class Consts {
     public static final String NO_JOKE = "When Chuck Norris jokes are elusive, it means Chuck is too busy fighting off ninjas." +
             System.lineSeparator() +"Check back later, and he might share his ninja-defying humor with us.";
 
-    public static String INVALID_INPUT_LANGUAGE = "Chuck Norris never gets invalid input." +
+    public static final String INVALID_INPUT_LANGUAGE = "Chuck Norris never gets invalid input." +
             System.lineSeparator() + "Please roundhouse kick it into proper format." +
             System.lineSeparator() +  "For example: Set language english";
 
-    public static String NO_TRANSLATION = "When Chuck Norris tried to use the online translator," +
+    public static final String NO_TRANSLATION = "When Chuck Norris tried to use the online translator," +
             System.lineSeparator() + " the translator apologized and asked Chuck Norris to teach it the language instead." +
             System.lineSeparator() + "While the translator is learning, try a different language";
 
-    public static String SET_LANGUAGE_FIRST = "Chuck Norris speaks all languages, which is why you should pick one first." +
+    public static final String SET_LANGUAGE_FIRST = "Chuck Norris speaks all languages, which is why you should pick one first." +
             System.lineSeparator() +  "For example: Set language english";
 
-    public static String INVALID_INPUT_NUMBER = "Chuck Norris never gets invalid input," +
+    public static final String INVALID_INPUT_NUMBER = "Chuck Norris never gets invalid input," +
             System.lineSeparator() + "your keyboard should apologize." +
             System.lineSeparator() + "Or try typing a valid number between 1 - 101";
 
