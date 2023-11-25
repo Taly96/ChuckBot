@@ -8,7 +8,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import java.util.Locale;
 
 import static org.bot.utils.Consts.*;
 
@@ -16,29 +15,26 @@ public class TextTranslator {
 
     private final OkHttpClient client = new OkHttpClient();
 
-    public String Post(String toTranslate, String targetLanguage) throws IOException {
-        String translatedText = INVALID_INPUT;
-        String languageCode = findLanguageCode(targetLanguage);
+    public String Post(String toTranslate, String targetLanguageCode) throws IOException {
+        String translatedText = NO_TRANSLATION;
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(
+                "[{\"Text\": \"" + toTranslate + "\"}]",
+                mediaType);
+        Request request = new Request.Builder()
+                .url(AZ_URL + "&from=en&to=" + targetLanguageCode.toLowerCase())
+                .post(body)
+                .addHeader("Ocp-Apim-Subscription-Key", AZ_KEY)
+                .addHeader("Ocp-Apim-Subscription-Region", AZ_LOCATION)
+                .addHeader("Content-type", "application/json")
+                .build();
 
-        if(null != languageCode){
-            MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(
-                    "[{\"Text\": \"" + toTranslate + "\"}]",
-                    mediaType);
-            Request request = new Request.Builder()
-                    .url(AZ_URL + "&from=en&to=" + languageCode.toLowerCase())
-                    .post(body)
-                    .addHeader("Ocp-Apim-Subscription-Key", AZ_KEY)
-                    .addHeader("Ocp-Apim-Subscription-Region", AZ_LOCATION)
-                    .addHeader("Content-type", "application/json")
-                    .build();
+        Response response = client.newCall(request).execute();
 
-            Response response = client.newCall(request).execute();
-
-            if(response.isSuccessful() && null != response.body()){
-                translatedText = extractTranslatedText(response.body().string());
-            }
+        if(response.isSuccessful() && null != response.body()){
+            translatedText = extractTranslatedText(response.body().string());
         }
+
 
         return translatedText;
     }
@@ -60,17 +56,6 @@ public class TextTranslator {
         return translatedText;
     }
 
-    private String findLanguageCode(String targetLanguageName) {
-        Locale[] availableLocales = Locale.getAvailableLocales();
 
-        for (Locale locale : availableLocales) {
-
-            if (locale.getDisplayLanguage().equalsIgnoreCase(targetLanguageName)) {
-                return locale.getLanguage();
-            }
-        }
-
-        return null;
-    }
 
 }
