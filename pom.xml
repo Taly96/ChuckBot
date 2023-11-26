@@ -34,8 +34,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version> <!-- Use the version appropriate for your project -->
                 <configuration>
-                    <source>11</source> <!-- Set this to the Java version you want to use for compilation -->
-                    <target>11</target> <!-- Set this to the Java version you want to use for compilation -->
+                    <source>17</source> <!-- Set this to the Java version you want to use for compilation -->
+                    <target>17</target> <!-- Set this to the Java version you want to use for compilation -->
                 </configuration>
             </plugin>
             <plugin>

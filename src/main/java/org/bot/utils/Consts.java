@@ -34,8 +34,9 @@ public class Consts {
             System.lineSeparator() +  "For example: Set language english";
 
     public static final String NO_TRANSLATION = "When Chuck Norris tried to use the online translator," +
-            System.lineSeparator() + " the translator apologized and asked Chuck Norris to teach it the language instead." +
-            System.lineSeparator() + "While the translator is learning, try a different language";
+             "the translator apologized" +
+            System.lineSeparator() + "and asked Chuck Norris to teach it the language instead." +
+            System.lineSeparator() + "While the translator is learning, try a different language.";
 
     public static final String SET_LANGUAGE_FIRST = "Chuck Norris speaks all languages, which is why you should pick one first." +
             System.lineSeparator() +  "For example: Set language english";

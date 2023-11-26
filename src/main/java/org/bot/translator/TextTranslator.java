@@ -34,6 +34,7 @@ public class TextTranslator {
         if(response.isSuccessful() && null != response.body()){
             translatedText = extractTranslatedText(response.body().string());
         }
+        response.close();
 
         return translatedText;
     }
