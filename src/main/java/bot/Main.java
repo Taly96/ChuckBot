@@ -1,6 +1,6 @@
-package org.bot.main;
+package bot;
 
-import org.bot.ChuckBot;
+import bot.chuck.ChuckBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;

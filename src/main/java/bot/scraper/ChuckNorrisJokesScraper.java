@@ -1,17 +1,16 @@
-package org.bot.scraper;
+package bot.scraper;
 
+import bot.utils.Consts;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import java.util.List;
 
-import static org.bot.utils.Consts.*;
-
 public class ChuckNorrisJokesScraper {
 
     public String getJokeByNumber(int jokeNumber){
-        String joke = NO_JOKE;
+        String joke = Consts.NO_JOKE;
 
         try {
             WebClient webClient = new WebClient();
@@ -21,10 +20,10 @@ public class ChuckNorrisJokesScraper {
             webClient.getOptions().setJavaScriptEnabled(false);
             webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
             webClient.getOptions().setThrowExceptionOnScriptError(false);
-            webClient.addRequestHeader("User-Agent", USER_AGENT);
+            webClient.addRequestHeader("User-Agent", Consts.USER_AGENT);
 
-            HtmlPage htmlPage = webClient.getPage(JOKES_URL);
-            HtmlElement jokesContainer = htmlPage.getBody().getFirstByXPath(JOKES_OL_XPATH);
+            HtmlPage htmlPage = webClient.getPage(Consts.JOKES_URL);
+            HtmlElement jokesContainer = htmlPage.getBody().getFirstByXPath(Consts.JOKES_OL_XPATH);
             List<HtmlElement> jokes = jokesContainer.getByXPath(".//li");
 
             if (!jokes.isEmpty()) {

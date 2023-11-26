@@ -1,16 +1,16 @@
-package org.bot;
+package bot.chuck;
 
-import org.bot.scraper.ChuckNorrisJokesScraper;
-import org.bot.translator.TextTranslator;
+import bot.scraper.ChuckNorrisJokesScraper;
+import bot.translator.TextTranslator;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import static org.bot.utils.Utils.*;
+import static bot.utils.Utils.*;
 
 import java.io.IOException;
 
-import static org.bot.utils.Consts.*;
+import static bot.utils.Consts.*;
 
 
 public class ChuckBot extends TelegramLongPollingBot {

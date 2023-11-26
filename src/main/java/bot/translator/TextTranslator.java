@@ -1,6 +1,7 @@
-package org.bot.translator;
+package bot.translator;
 import java.io.IOException;
 
+import bot.utils.Consts;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.MediaType;
@@ -9,23 +10,21 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static org.bot.utils.Consts.*;
-
 public class TextTranslator {
 
     private final OkHttpClient client = new OkHttpClient();
 
     public String Post(String toTranslate, String targetLanguageCode) throws IOException {
-        String translatedText = NO_TRANSLATION;
+        String translatedText = Consts.NO_TRANSLATION;
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(
                 "[{\"Text\": \"" + toTranslate + "\"}]",
                 mediaType);
         Request request = new Request.Builder()
-                .url(AZ_URL + "&from=en&to=" + targetLanguageCode.toLowerCase())
+                .url(Consts.AZ_URL + "&from=en&to=" + targetLanguageCode.toLowerCase())
                 .post(body)
-                .addHeader("Ocp-Apim-Subscription-Key", AZ_KEY)
-                .addHeader("Ocp-Apim-Subscription-Region", AZ_LOCATION)
+                .addHeader("Ocp-Apim-Subscription-Key", Consts.AZ_KEY)
+                .addHeader("Ocp-Apim-Subscription-Region", Consts.AZ_LOCATION)
                 .addHeader("Content-type", "application/json")
                 .build();
 

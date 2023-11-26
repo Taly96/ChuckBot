@@ -1,4 +1,4 @@
-package org.bot.utils;
+package bot.utils;
 
 public class Consts {
 
