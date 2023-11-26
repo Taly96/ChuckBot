@@ -37,23 +37,26 @@ public class ChuckBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        String msgFromUser = update.getMessage().getText();
-        userID = update.getMessage().getFrom().getId();
 
-        if(null != msgFromUser && !msgFromUser.isEmpty()){
+        if(update.hasMessage()){
+            String msgFromUser = update.getMessage().getText();
+            userID = update.getMessage().getFrom().getId();
 
             try {
-                handleUpdate(msgFromUser);
+                handleMessage(msgFromUser);
             } catch (IOException | TelegramApiException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void handleUpdate(String msgFromUser) throws IOException, TelegramApiException {
+    private void handleMessage(String msgFromUser) throws IOException, TelegramApiException {
         String msgToUser = "";
 
-        if(msgFromUser.toLowerCase().startsWith(SET_LANGUAGE)){
+        if(msgFromUser.toLowerCase().startsWith(START)){
+            msgToUser = TRY_ME;
+        }
+        else if(msgFromUser.toLowerCase().startsWith(SET_LANGUAGE)){
                 msgToUser = setLanguage(msgFromUser);
         }
         else if (isNumeric(msgFromUser)){
@@ -117,7 +120,7 @@ public class ChuckBot extends TelegramLongPollingBot {
         return translatedText;
     }
 
-    public void sendText(Long who, String what) throws TelegramApiException {
+    public synchronized void sendText(Long who, String what) throws TelegramApiException {
         SendMessage sm = SendMessage.builder()
                 .chatId(who.toString())
                 .text(what).build();

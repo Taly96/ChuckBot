@@ -14,6 +14,8 @@ public class Consts {
 
     public static final String NO_PROBLEM = "No problem";
 
+    public static final String START = "/start";
+
     public static final String SET_LANGUAGE = "set language";
 
     public static final String TEL_USER = System.getenv("TEL_USER");
@@ -25,6 +27,8 @@ public class Consts {
     public static final String AZ_LOCATION = System.getenv("AZ_LOCATION");
 
     public static final String AZ_URL = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0";
+
+    public static final String TRY_ME = "Try me, pick a language";
 
     public static final String NO_JOKE = "When Chuck Norris jokes are elusive, it means Chuck is too busy fighting off ninjas." +
             System.lineSeparator() +"Check back later, and he might share his ninja-defying humor with us.";
