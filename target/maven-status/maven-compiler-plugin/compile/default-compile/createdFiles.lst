@@ -1,0 +1,6 @@
+bot\Main.class
+bot\utils\Consts.class
+bot\chuck\ChuckBot.class
+bot\utils\Utils.class
+bot\scraper\ChuckNorrisJokesScraper.class
+bot\translator\TextTranslator.class
