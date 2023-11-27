@@ -4,24 +4,20 @@ import bot.scraper.ChuckNorrisJokesScraper;
 import bot.translator.TextTranslator;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import static bot.utils.Utils.*;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static bot.utils.Consts.*;
 
 
 public class ChuckBot extends TelegramLongPollingBot {
 
-    private final TextTranslator translator = new TextTranslator();
-
-    private final ChuckNorrisJokesScraper scraper = new ChuckNorrisJokesScraper();
-
-    private long userID = -1;
-
-    private String langCode = null;
+    private ConcurrentHashMap<Long, String> activeUsers = new ConcurrentHashMap<>();
 
     @Override
     public String getBotUsername() {
@@ -37,10 +33,8 @@ public class ChuckBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
         if(update.hasMessage()){
-            String msgFromUser = update.getMessage().getText();
-            userID = update.getMessage().getFrom().getId();
+            Message msgFromUser = update.getMessage();
 
             try {
                 handleMessage(msgFromUser);
@@ -48,42 +42,88 @@ public class ChuckBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         }
+        else{
+            try{
+                sendText(update.getChatMember().getFrom().getId(), TRY_ME);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    private void handleMessage(String msgFromUser) throws IOException, TelegramApiException {
+    private void handleMessage(Message msgFromUser) throws IOException, TelegramApiException {
         String msgToUser = "";
+        String textFromUser = msgFromUser.getText();
+        long userID = msgFromUser.getFrom().getId();
 
-        if(msgFromUser.toLowerCase().startsWith(START)){
+        if(textFromUser.toLowerCase().startsWith(START)){
+            activeUsers.put(userID, NULL);
             msgToUser = TRY_ME;
         }
-        else if(msgFromUser.toLowerCase().startsWith(SET_LANGUAGE)){
-                msgToUser = setLanguage(msgFromUser);
+        else if(textFromUser.toLowerCase().startsWith(SET_LANGUAGE)){
+            msgToUser = setLanguage(userID, textFromUser);
         }
-        else if (isNumeric(msgFromUser)){
+        else if (isNumeric(textFromUser)){
+            msgToUser = getJokeByNumber(userID, textFromUser);
+        }
+        else{
+            msgToUser = handleWrongInput(userID);
+        }
+        sendText(userID, msgToUser);
+    }
 
-            if(null != langCode){
-                int jokeNumber = Integer.parseInt(msgFromUser);
-                if(isValidJokeNumber(jokeNumber)){
-                    msgToUser = getChuckNorrisJoke(jokeNumber, langCode);
-                }
-                else{
-                    msgToUser = INVALID_INPUT_NUMBER;
-                }
-            }
-            else{
-                msgToUser = SET_LANGUAGE_FIRST;
-            }
+    private String handleWrongInput(long userID) {
+        String msgToUser = "";
+        String langCode = activeUsers.get(userID);
 
-        }else{
+        if(langCode.equals(NULL)){
+            msgToUser = SET_LANGUAGE_FIRST;
+        }
+        else{
+            msgToUser = INVALID_INPUT_NUMBER;
+        }
 
-            if(null == langCode){
-                msgToUser = SET_LANGUAGE_FIRST;
+        return msgToUser;
+    }
+
+    private String getJokeByNumber(long userID, String textFromUser) throws IOException {
+        String msgToUser;
+        String langCode = activeUsers.get(userID);
+
+        if(!langCode.equals(NULL)){
+            int jokeNumber = Integer.parseInt(textFromUser);
+
+            if(isValidJokeNumber(jokeNumber)){
+                ChuckNorrisJokesScraper scraper = new ChuckNorrisJokesScraper();
+                TextTranslator translator = new TextTranslator();
+
+                msgToUser = translator.Post(scraper.getJokeByNumber(jokeNumber), langCode);
             }
             else{
                 msgToUser = INVALID_INPUT_NUMBER;
             }
         }
-        sendText(userID, msgToUser);
+        else{
+            msgToUser = SET_LANGUAGE_FIRST;
+        }
+        return msgToUser;
+    }
+
+    private String setLanguage(long userID, String textFromUser) throws IOException {
+        String msgToUser;
+        String langCode = getLangCode(textFromUser);
+
+        if(null != langCode && !langCode.isEmpty()){
+            TextTranslator translator = new TextTranslator();
+
+            activeUsers.put(userID, langCode);
+            msgToUser = translator.Post(NO_PROBLEM, langCode);
+        }
+        else{
+            msgToUser = INVALID_INPUT_LANGUAGE;
+        }
+
+        return msgToUser;
     }
 
     private boolean isNumeric(String msgFromUser){
@@ -98,26 +138,15 @@ public class ChuckBot extends TelegramLongPollingBot {
         return isNumeric;
     }
 
-    private String getChuckNorrisJoke(int jokeNumber, String langCode) throws IOException {
-
-        return translator.Post(scraper.getJokeByNumber(jokeNumber), langCode);
-    }
-
     private boolean isValidJokeNumber(int jokeNumber) {
 
         return jokeNumber >= MIN_JOKE_NUM && jokeNumber <= MAX_JOKE_NUM;
     }
 
-    private String setLanguage(String msgFromUser) throws IOException {
+    private String getLangCode(String msgFromUser) {
         String selectedLang = msgFromUser.toLowerCase().substring(SET_LANGUAGE.length()).trim();
-        String translatedText = INVALID_INPUT_LANGUAGE;
-        langCode = findLanguageCode(selectedLang);
 
-        if(null != langCode) {
-            translatedText = translator.Post(NO_PROBLEM, langCode);
-        }
-
-        return translatedText;
+        return findLanguageCode(selectedLang);
     }
 
     public synchronized void sendText(Long who, String what) throws TelegramApiException {
@@ -127,6 +156,4 @@ public class ChuckBot extends TelegramLongPollingBot {
 
         execute(sm);
     }
-
-
 }

@@ -4,6 +4,8 @@ public class Consts {
 
     public static final int MIN_JOKE_NUM = 1;
 
+    public static final String NULL = "null";
+
     public static final String JOKES_URL = "https://parade.com/968666/parade/chuck-norris-jokes";
 
     public static final String JOKES_OL_XPATH = "/html/body/phoenix-page/div[1]/div/div[4]/section[2]/article/div/div[2]/section/div[1]/div[3]/ol";
